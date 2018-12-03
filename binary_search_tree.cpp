@@ -142,5 +142,5 @@ int main()
                 root=search1(root->right,val);
             }
         }
-        return root;
+        return root;//////////////////////////////pending
     }
