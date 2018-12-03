@@ -9,9 +9,9 @@ using namespace std;
 	    node *right;
 	};
 
-    node* delete1(node *);
+    node* search1(node *,int);
     node* insert1(node *,node *);
-	void display(node *last);
+	void display(node *);
 
 int main()
 {
@@ -46,7 +46,26 @@ int main()
                 break;
 				}
 			case 3:{
-
+			    if(root==NULL)
+                {
+                    cout<<"\n no number inserted!!!!";
+                }
+                else
+                {
+                    int val;
+                    node *t;
+                    cout<<"enter the number to be searched:";
+                    cin>>val;
+                    t=search1(root,val);
+                    if(t)
+                    {
+                        cout<<"\n returned:"<<t->data;
+                    }
+                    else
+                    {
+                        cout<<"\n"<<val<<" is not present!!!";
+                    }
+                }
 				break;
 				}
 		}
@@ -106,3 +125,22 @@ int main()
             }
             return root;
 	}
+
+    node* search1(node *root,int val){
+        if(root->data==val)
+        {
+            cout<<"\n value found:";
+        }
+        else
+        {
+            if(val<root->data)
+            {
+                root=search1(root->left,val);
+            }
+            if(val>root->data)
+            {
+                root=search1(root->right,val);
+            }
+        }
+        return root;
+    }
