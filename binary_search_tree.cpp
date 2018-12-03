@@ -127,20 +127,28 @@ int main()
 	}
 
     node* search1(node *root,int val){
-        if(root->data==val)
+        if(root!=NULL)
         {
-            cout<<"\n value found:";
-        }
-        else
-        {
-            if(val<root->data)
+                if(root->data==val)
             {
-                root=search1(root->left,val);
+                cout<<"\n value found:";
             }
-            if(val>root->data)
+            else
             {
-                root=search1(root->right,val);
+                if(val<root->data)
+                {
+                    root=search1(root->left,val);
+                }
+                else
+                {
+                    if(val>root->data)
+                    {
+                        root=search1(root->right,val);
+                    }
+                }
+
             }
         }
-        return root;//////////////////////////////pending
+        return root;
+
     }
