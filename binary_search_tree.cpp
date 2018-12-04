@@ -12,6 +12,7 @@ using namespace std;
     node* search1(node *,int);
     node* insert1(node *,node *);
 	void display(node *);
+    node* delete1(node *,node *);
 
 int main()
 {
@@ -20,7 +21,7 @@ int main()
 	do
 	{       cout<<"\n*********************************\n";
 
-		cout<<"\n\n\n enter your choice \n 1:insert a number. \n 2.display \n 3.search for a number. \n  0.exit.";
+		cout<<"\n\n\n enter your choice \n 1:insert a number. \n 2.display \n 3.search for a number. \n 4.delete a number.\n  0.exit.";
 		cin>>c;
 		switch(c)
 		{
@@ -53,13 +54,13 @@ int main()
                 else
                 {
                     int val;
-                    node *t;
+                    node *pointer_to_the_node;
                     cout<<"enter the number to be searched:";
                     cin>>val;
-                    t=search1(root,val);
-                    if(t)
+                    pointer_to_the_node=search1(root,val);
+                    if(pointer_to_the_node)
                     {
-                        cout<<"\n returned:"<<t->data;
+                        cout<<"\n returned:"<<pointer_to_the_node->data;
                     }
                     else
                     {
@@ -68,6 +69,23 @@ int main()
                 }
 				break;
 				}
+            case 4:{
+                    int val;
+                    node *pointer_to_the_node;
+                    cout<<"enter the number to be deleted:";
+                    cin>>val;
+                    pointer_to_the_node=search1(root,val);
+                    if(pointer_to_the_node)
+                    {
+                        delete1(root,pointer_to_the_node);
+                        if(pointer_to_the_node)
+                        cout<<"\n"<<pointer_to_the_node->data<<" is deleted sucessfully!";
+                    }
+                    else
+                    {
+                        cout<<"\n"<<val<<" is not present!!!";
+                    }
+                }
 		}
 	    cout<<"\n___________________________________________________\n";
 	}while(c!=0 && c<5 && c>0);
@@ -152,3 +170,31 @@ int main()
         return root;
 
     }
+
+
+node* delete1(node *root,node *pointer_to_the_node){
+    if(pointer_to_the_node->data<root->data && root->left->data==pointer_to_the_node->data)
+    {
+        root->left=NULL;
+    }else
+    {
+        if(pointer_to_the_node->data<root->data)
+        {
+            delete1(root->left,pointer_to_the_node);
+        }
+        else
+        {
+            if(pointer_to_the_node->data>root->data && root->right->data==pointer_to_the_node->data)
+            {
+                root->right=NULL;
+            }else
+            {
+                if(pointer_to_the_node->data>root->data)
+                {
+                    delete1(root->right,pointer_to_the_node);
+                }
+
+            }
+        }
+    }
+}
