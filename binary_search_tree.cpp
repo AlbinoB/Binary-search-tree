@@ -17,6 +17,7 @@ using namespace std;
     node* delete1(node *,node *);
     node* successor(node *);
     node* minoftee(node *);
+    node* maxoftee(node *);
 
     node* parent;
     node* successorparent;
@@ -28,7 +29,7 @@ int main()
 	do
 	{       cout<<"\n*********************************\n";
 
-		cout<<"\n\n\n enter your choice \n 1:insert a number. \n 2.display infix  \n 3.display prefix  \n 4.display postfix  \n 5.search for a number. \n 6.delete a number.\n 7.find the successor. \n 8.Min of the tree. \n  0.exit.";
+		cout<<"\n\n\n enter your choice \n 1:insert a number. \n 2.display infix  \n 3.display prefix  \n 4.display postfix  \n 5.search for a number. \n 6.delete a number.\n 7.find the successor. \n 8.Min of the tree. \n 9.Max of the tree \n  0.exit.";
 		cin>>c;
 		switch(c)
 		{
@@ -116,7 +117,7 @@ int main()
                     {
                         delete1(root,pointer_to_the_node);
                         if(pointer_to_the_node)
-                        cout<<"\n"<<pointer_to_the_node->data<<" is deleted sucessfully!";
+                        cout<<"\n"<<val<<" is deleted sucessfully!";
                     }
                     else
                     {
@@ -135,7 +136,7 @@ int main()
                         success=successor(pointer_to_the_node);
                         if(success)
                         {
-                            cout<<"\n successor of "<<pointer_to_the_node->data<<" is :"<<success->data;
+                            cout<<"\n successor of "<<pointer_to_the_node->data<<" is :"<<success->data<<" parent:"<<successorparent->data;
                         }
                         else
                         {
@@ -162,9 +163,22 @@ int main()
                         break;
                     }
                 }
+            case 9:{
+                    if(root==NULL)
+                    {
+                        cout<<"\n no number inserted!!!!";
+                    }
+                    else
+                    {
+                        node *maxtee;
+                        maxtee=maxoftee(root);
+                        cout<<"\n Max of the tree is :"<<maxtee->data;
+                        break;
+                    }
+                }
 		}
 	    cout<<"\n___________________________________________________\n";
-	}while(c!=0 && c<9 && c>0);
+	}while(c!=0 && c<10 && c>0);
 	return 0;
 }
 
@@ -310,9 +324,8 @@ node* delete1(node *root,node *pointer_to_the_node){
                         {
                             if(successorparent->right==success)//if the successor's parent pointer is pointing to the node to be deleted
                             {
-                                cout<<"\n ::";
                                 pointer_to_the_node->data=success->data;//copy the successor's data in the node to be deleted
-                                successorparent->right==NULL;
+                                successorparent->right=NULL;//or pointer_to_the_node->right=NULL;
                             }
                             else
                             {
@@ -363,6 +376,17 @@ node* minoftee(node *root){
     else
     {   successorparent=root;
         root=minoftee(root->left);
+    }
+}
+
+node* maxoftee(node *root){
+    if(root->right==NULL)
+    {
+        return root;
+    }
+    else
+    {   successorparent=root;
+        root=maxoftee(root->right);
     }
 }
 
