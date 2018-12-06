@@ -15,8 +15,11 @@ using namespace std;
 	void prefixdisplay(node *);
 	void postfixdisplay(node *);
     node* delete1(node *,node *);
+    node* successor(node *);
+    node* minoftee(node *);
 
     node* parent;
+    node* successorparent;
 
 int main()
 {
@@ -25,7 +28,7 @@ int main()
 	do
 	{       cout<<"\n*********************************\n";
 
-		cout<<"\n\n\n enter your choice \n 1:insert a number. \n 2.display infix  \n 3.display prefix  \n 4.display postfix  \n 5.search for a number. \n 6.delete a number.\n  0.exit.";
+		cout<<"\n\n\n enter your choice \n 1:insert a number. \n 2.display infix  \n 3.display prefix  \n 4.display postfix  \n 5.search for a number. \n 6.delete a number.\n 7.find the successor. \n 8.Min of the tree. \n  0.exit.";
 		cin>>c;
 		switch(c)
 		{
@@ -119,10 +122,49 @@ int main()
                     {
                         cout<<"\n"<<val<<" is not present!!!";
                     }
+                    break;
+                }
+            case 7:{
+                    int val;
+                    node *pointer_to_the_node,*success;
+                    cout<<"enter the number:";
+                    cin>>val;
+                    pointer_to_the_node=search1(root,val);
+                    if(pointer_to_the_node)
+                    {
+                        success=successor(pointer_to_the_node);
+                        if(success)
+                        {
+                            cout<<"\n successor of "<<pointer_to_the_node->data<<" is :"<<success->data;
+                        }
+                        else
+                        {
+                            cout<<"\n"<<val<<"has no successor!!!";
+                        }
+
+                    }
+                    else
+                    {
+                        cout<<"\n"<<val<<" is not present!!!";
+                    }
+                    break;
+                }
+            case 8:{
+                    if(root==NULL)
+                    {
+                        cout<<"\n no number inserted!!!!";
+                    }
+                    else
+                    {
+                        node *mintee;
+                        mintee=minoftee(root);
+                        cout<<"\n Min of the tree is :"<<mintee->data;
+                        break;
+                    }
                 }
 		}
 	    cout<<"\n___________________________________________________\n";
-	}while(c!=0 && c<7 && c>0);
+	}while(c!=0 && c<9 && c>0);
 	return 0;
 }
 
@@ -247,12 +289,6 @@ int main()
 
 
 node* delete1(node *root,node *pointer_to_the_node){
-    if(pointer_to_the_node==root)
-    {
-
-    }
-    else
-    {
         if(pointer_to_the_node->left==NULL&&pointer_to_the_node->right==NULL)
         {
             if(pointer_to_the_node->data<parent->data)
@@ -262,30 +298,84 @@ node* delete1(node *root,node *pointer_to_the_node){
             else
             {
                 parent->right=NULL;
-                     pointer_to_the_node->right->left=pointer_to_the_node->left;
             }
         }
         else
         {
-            if(pointer_to_the_node->left!=NULL||pointer_to_the_node->right!=NULL)
+            if(pointer_to_the_node->left!=NULL&&pointer_to_the_node->right!=NULL)
             {
-                 if(pointer_to_the_node->data>parent->data)
-                {
-                    parent->right=NULL;
-                }
-                else
-                {
-                    parent->left=NULL;
-                }
+                node *success;
+                success=successor(pointer_to_the_node);
+                if(success)
+                        {
+                            if(successorparent->right==success)//if the successor's parent pointer is pointing to the node to be deleted
+                            {
+                                cout<<"\n ::";
+                                pointer_to_the_node->data=success->data;//copy the successor's data in the node to be deleted
+                                successorparent->right==NULL;
+                            }
+                            else
+                            {
+                                pointer_to_the_node->data=success->data;
+                                successorparent->left=NULL;
+                            }
+
+                        }
+                        else
+                        {
+                            parent->right=pointer_to_the_node->left;//doesnt have any successor point the parent to the left of the node
+                        }
             }
             else
             {
-                 if(pointer_to_the_node->left!=NULL&&pointer_to_the_node->right!=NULL)
-                 {
-                     pointer_to_the_node->right->left=pointer_to_the_node->left;////sucessor must be replaced with the parent
-                     parent->right=pointer_to_the_node->right;
-                 }
+                if(pointer_to_the_node->data>parent->data)
+                {
+                    if(pointer_to_the_node->left!=NULL)
+                    {
+                        parent->right=pointer_to_the_node->left;
+                    }
+                    else
+                    {
+                        parent->right=pointer_to_the_node->right;
+                    }
+                }
+                else
+                {
+                    if(pointer_to_the_node->left!=NULL)
+                    {
+                        parent->left=pointer_to_the_node->left;
+                    }
+                    else
+                    {
+                        parent->left=pointer_to_the_node->right;
+                    }
+                }
             }
         }
+    return root;//if rhe root is to be deleted it will change
+}
+
+node* minoftee(node *root){
+    if(root->left==NULL)
+    {
+        return root;
+    }
+    else
+    {   successorparent=root;
+        root=minoftee(root->left);
+    }
+}
+
+node* successor(node * pointer_to_the_node){
+    if(pointer_to_the_node->right==NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        node *mintee;
+        successorparent=pointer_to_the_node;
+        mintee=minoftee(pointer_to_the_node->right);
+        return mintee;
     }
 }
