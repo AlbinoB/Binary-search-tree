@@ -58,8 +58,9 @@ int main()
                 else
                 {
 				infixdisplay(root);
-                break;
+
 				}
+				break;
             }
             case 3:{
                 if(root==NULL)
@@ -69,8 +70,9 @@ int main()
                 else
                 {
 				prefixdisplay(root);
-                break;
+
 				}
+                break;
             }
             case 4:{
                 if(root==NULL)
@@ -79,9 +81,10 @@ int main()
                 }
                 else
                 {
+                    cout<<"\n root:"<<root->data;
 				postfixdisplay(root);
-                break;
 				}
+				break;
             }
 			case 5:{
 			    if(root==NULL)
@@ -115,7 +118,7 @@ int main()
                     pointer_to_the_node=search1(root,val);
                     if(pointer_to_the_node)
                     {
-                        delete1(root,pointer_to_the_node);
+                        root=delete1(root,pointer_to_the_node);
                         if(pointer_to_the_node)
                         cout<<"\n"<<val<<" is deleted sucessfully!";
                     }
@@ -303,69 +306,76 @@ int main()
 
 
 node* delete1(node *root,node *pointer_to_the_node){
-        if(pointer_to_the_node->left==NULL&&pointer_to_the_node->right==NULL)
-        {
-            if(pointer_to_the_node->data<parent->data)
+    if(pointer_to_the_node==root&&pointer_to_the_node->left==NULL&&pointer_to_the_node->right==NULL)
+    {
+        root=NULL;
+    }
+    else
+    {
+            if(pointer_to_the_node->left==NULL&&pointer_to_the_node->right==NULL)
             {
-                parent->left=NULL;
-            }
-            else
-            {
-                parent->right=NULL;
-            }
-        }
-        else
-        {
-            if(pointer_to_the_node->left!=NULL&&pointer_to_the_node->right!=NULL)
-            {
-                node *success;
-                success=successor(pointer_to_the_node);
-                if(success)
-                        {
-                            if(successorparent->right==success)//if the successor's parent pointer is pointing to the node to be deleted
-                            {
-                                pointer_to_the_node->data=success->data;//copy the successor's data in the node to be deleted
-                                successorparent->right=NULL;//or pointer_to_the_node->right=NULL;
-                            }
-                            else
-                            {
-                                pointer_to_the_node->data=success->data;
-                                successorparent->left=NULL;
-                            }
-
-                        }
-                        else
-                        {
-                            parent->right=pointer_to_the_node->left;//doesnt have any successor point the parent to the left of the node
-                        }
-            }
-            else
-            {
-                if(pointer_to_the_node->data>parent->data)
+                if(pointer_to_the_node->data<parent->data)
                 {
-                    if(pointer_to_the_node->left!=NULL)
-                    {
-                        parent->right=pointer_to_the_node->left;
-                    }
-                    else
-                    {
-                        parent->right=pointer_to_the_node->right;
-                    }
+                    parent->left=NULL;
                 }
                 else
                 {
-                    if(pointer_to_the_node->left!=NULL)
+                    parent->right=NULL;
+                }
+            }
+            else
+            {
+                if(pointer_to_the_node->left!=NULL&&pointer_to_the_node->right!=NULL)
+                {
+                    node *success;
+                    success=successor(pointer_to_the_node);
+                    if(success)
+                            {
+                                if(successorparent->right==success)//if the successor's parent pointer is pointing to the node to be deleted
+                                {
+                                    pointer_to_the_node->data=success->data;//copy the successor's data in the node to be deleted
+                                    successorparent->right=NULL;//or pointer_to_the_node->right=NULL;
+                                }
+                                else
+                                {
+                                    pointer_to_the_node->data=success->data;
+                                    successorparent->left=NULL;
+                                }
+
+                            }
+                            else
+                            {
+                                parent->right=pointer_to_the_node->left;//doesnt have any successor point the parent to the left of the node
+                            }
+                }
+                else
+                {
+                    if(pointer_to_the_node->data>parent->data)
                     {
-                        parent->left=pointer_to_the_node->left;
+                        if(pointer_to_the_node->left!=NULL)
+                        {
+                            parent->right=pointer_to_the_node->left;
+                        }
+                        else
+                        {
+                            parent->right=pointer_to_the_node->right;
+                        }
                     }
                     else
                     {
-                        parent->left=pointer_to_the_node->right;
+                        if(pointer_to_the_node->left!=NULL)
+                        {
+                            parent->left=pointer_to_the_node->left;
+                        }
+                        else
+                        {
+                            parent->left=pointer_to_the_node->right;
+                        }
                     }
                 }
             }
-        }
-    return root;//if rhe root is to be deleted it will change
+    }
+        return root;//if rhe root is to be deleted it will change
 }
 
 node* minoftee(node *root){
