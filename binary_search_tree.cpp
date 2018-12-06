@@ -11,8 +11,12 @@ using namespace std;
 
     node* search1(node *,int);
     node* insert1(node *,node *);
-	void display(node *);
+	void infixdisplay(node *);
+	void prefixdisplay(node *);
+	void postfixdisplay(node *);
     node* delete1(node *,node *);
+
+    node* parent;
 
 int main()
 {
@@ -21,7 +25,7 @@ int main()
 	do
 	{       cout<<"\n*********************************\n";
 
-		cout<<"\n\n\n enter your choice \n 1:insert a number. \n 2.display \n 3.search for a number. \n 4.delete a number.\n  0.exit.";
+		cout<<"\n\n\n enter your choice \n 1:insert a number. \n 2.display infix  \n 3.display prefix  \n 4.display postfix  \n 5.search for a number. \n 6.delete a number.\n  0.exit.";
 		cin>>c;
 		switch(c)
 		{
@@ -43,10 +47,39 @@ int main()
 				break;
 				}
             case 2:{
-				display(root);
+                if(root==NULL)
+                {
+                    cout<<"\n no number inserted!!!!";
+                }
+                else
+                {
+				infixdisplay(root);
                 break;
 				}
-			case 3:{
+            }
+            case 3:{
+                if(root==NULL)
+                {
+                    cout<<"\n no number inserted!!!!";
+                }
+                else
+                {
+				prefixdisplay(root);
+                break;
+				}
+            }
+            case 4:{
+                if(root==NULL)
+                {
+                    cout<<"\n no number inserted!!!!";
+                }
+                else
+                {
+				postfixdisplay(root);
+                break;
+				}
+            }
+			case 5:{
 			    if(root==NULL)
                 {
                     cout<<"\n no number inserted!!!!";
@@ -60,16 +93,17 @@ int main()
                     pointer_to_the_node=search1(root,val);
                     if(pointer_to_the_node)
                     {
-                        cout<<"\n returned:"<<pointer_to_the_node->data;
+                        cout<<"\n returned:"<<pointer_to_the_node->data<<"::its parent is :"<<parent->data;
                     }
                     else
                     {
                         cout<<"\n"<<val<<" is not present!!!";
                     }
+
                 }
 				break;
 				}
-            case 4:{
+            case 6:{
                     int val;
                     node *pointer_to_the_node;
                     cout<<"enter the number to be deleted:";
@@ -88,11 +122,11 @@ int main()
                 }
 		}
 	    cout<<"\n___________________________________________________\n";
-	}while(c!=0 && c<5 && c>0);
+	}while(c!=0 && c<7 && c>0);
 	return 0;
 }
 
-    void display(node *root){
+    void infixdisplay(node *root){
             if( root->right==NULL && root->left==NULL)
             {
                 cout<<" "<<root->data;
@@ -100,19 +134,57 @@ int main()
             {
                 if( root->left!=NULL)
                 {
-                    display(root->left);
+                    infixdisplay(root->left);
                 }
                 cout<<" "<<root->data;
                 if( root->right!=NULL)
                 {
-                    display(root->right);
+                    infixdisplay(root->right);
+                }
+            }
+
+    }
+
+ void prefixdisplay(node *root){
+            if( root->right==NULL && root->left==NULL)
+            {
+                cout<<" "<<root->data;
+            }else
+            {
+                cout<<" "<<root->data;
+                if( root->left!=NULL)
+                {
+                    prefixdisplay(root->left);
+                }
+
+                if( root->right!=NULL)
+                {
+                    prefixdisplay(root->right);
                 }
             }
 
     }
 
 
+ void postfixdisplay(node *root){
+            if( root->right==NULL && root->left==NULL)
+            {
+                cout<<" "<<root->data;
+            }else
+            {
+                if( root->left!=NULL)
+                {
+                    postfixdisplay(root->left);
+                }
 
+                if( root->right!=NULL)
+                {
+                    postfixdisplay(root->right);
+                }
+                cout<<" "<<root->data;
+            }
+
+    }
 
 	node* insert1(node *root,node *a)
 	{
@@ -155,12 +227,14 @@ int main()
             {
                 if(val<root->data)
                 {
+                    parent=root;
                     root=search1(root->left,val);
                 }
                 else
                 {
                     if(val>root->data)
                     {
+                        parent=root;
                         root=search1(root->right,val);
                     }
                 }
@@ -173,27 +247,44 @@ int main()
 
 
 node* delete1(node *root,node *pointer_to_the_node){
-    if(pointer_to_the_node->data<root->data && root->left->data==pointer_to_the_node->data)
+    if(pointer_to_the_node==root)
     {
-        root->left=NULL;
-    }else
+
+    }
+    else
     {
-        if(pointer_to_the_node->data<root->data)
+        if(pointer_to_the_node->left==NULL&&pointer_to_the_node->right==NULL)
         {
-            delete1(root->left,pointer_to_the_node);
+            if(pointer_to_the_node->data<parent->data)
+            {
+                parent->left=NULL;
+            }
+            else
+            {
+                parent->right=NULL;
+                     pointer_to_the_node->right->left=pointer_to_the_node->left;
+            }
         }
         else
         {
-            if(pointer_to_the_node->data>root->data && root->right->data==pointer_to_the_node->data)
+            if(pointer_to_the_node->left!=NULL||pointer_to_the_node->right!=NULL)
             {
-                root->right=NULL;
-            }else
-            {
-                if(pointer_to_the_node->data>root->data)
+                 if(pointer_to_the_node->data>parent->data)
                 {
-                    delete1(root->right,pointer_to_the_node);
+                    parent->right=NULL;
                 }
-
+                else
+                {
+                    parent->left=NULL;
+                }
+            }
+            else
+            {
+                 if(pointer_to_the_node->left!=NULL&&pointer_to_the_node->right!=NULL)
+                 {
+                     pointer_to_the_node->right->left=pointer_to_the_node->left;////sucessor must be replaced with the parent
+                     parent->right=pointer_to_the_node->right;
+                 }
             }
         }
     }
