@@ -308,7 +308,7 @@ int main()
 node* delete1(node *root,node *pointer_to_the_node){
     if(pointer_to_the_node==root&&pointer_to_the_node->left==NULL&&pointer_to_the_node->right==NULL)
     {
-        root=NULL;
+        root=NULL;//bug with root deletion
     }
     else
     {
