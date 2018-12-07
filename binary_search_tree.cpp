@@ -334,42 +334,63 @@ node* delete1(node *root,node *pointer_to_the_node){
                                 if(successorparent->right==success)//if the successor's parent pointer is pointing to the node to be deleted
                                 {
                                     pointer_to_the_node->data=success->data;//copy the successor's data in the node to be deleted
-                                    successorparent->right=NULL;//or pointer_to_the_node->right=NULL;
+                                    successorparent->right=pointer_to_the_node->right;
+                                    if(pointer_to_the_node->right->data==success->data&&success->left==NULL)//if the node to be deleted and its successor is to the immediate right and sucessor has single right child
+                                    {
+                                        pointer_to_the_node->right=success->right;
+                                        pointer_to_the_node->data=success->data;
+                                    }
                                 }
                                 else
                                 {
-                                    pointer_to_the_node->data=success->data;
-                                    successorparent->left=NULL;
+
+
+                                        pointer_to_the_node->data=success->data;
+                                        successorparent->left=success->left;
+
+
                                 }
 
-                            }
-                            else
-                            {
-                                parent->right=pointer_to_the_node->left;//doesnt have any successor point the parent to the left of the node
                             }
                 }
                 else
                 {
-                    if(pointer_to_the_node->data>parent->data)
+                    if(pointer_to_the_node->data==root->data)
                     {
                         if(pointer_to_the_node->left!=NULL)
                         {
-                            parent->right=pointer_to_the_node->left;
+                            root=pointer_to_the_node->left;
                         }
                         else
                         {
-                            parent->right=pointer_to_the_node->right;
+                            root=pointer_to_the_node->right;
                         }
                     }
                     else
                     {
-                        if(pointer_to_the_node->left!=NULL)
+
+
+                        if(pointer_to_the_node->data>parent->data)
                         {
-                            parent->left=pointer_to_the_node->left;
+                            if(pointer_to_the_node->left!=NULL)
+                            {
+                                parent->right=pointer_to_the_node->left;
+                            }
+                            else
+                            {
+                                parent->right=pointer_to_the_node->right;
+                            }
                         }
                         else
                         {
-                            parent->left=pointer_to_the_node->right;
+                            if(pointer_to_the_node->left!=NULL)
+                            {
+                                parent->left=pointer_to_the_node->left;
+                            }
+                            else
+                            {
+                                parent->left=pointer_to_the_node->right;
+                            }
                         }
                     }
                 }
